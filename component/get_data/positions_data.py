@@ -54,10 +54,10 @@ def get_positions_data():
 
 
 if __name__ == "__main__":
-    position_data = get_positions_data()
-    print(f'13:00のポジション数 : {len(position_data["13:00"]["positions"])}')
-    print(f'13:00のポジション内訳 : {position_data["13:00"]["counts"]}')
-    print(f'14:00のポジション数 : {len(position_data["14:00"]["positions"])}')
-    print(f'14:00のポジション内訳 : {position_data["14:00"]["counts"]}')
-    print(f'18:00のポジション数 : {len(position_data["18:00"]["positions"])}')
-    print(f'18:00のポジション内訳 : {position_data["18:00"]["counts"]}')
+    positions_data = get_positions_data()
+    print(f'13:00のポジション数 : {len(positions_data["13:00"]["positions"])}')
+    print(f'13:00のポジション内訳 : {positions_data["13:00"]["counts"]}')
+    print(f'14:00のポジション数 : {len(positions_data["14:00"]["positions"])}')
+    print(f'14:00のポジション内訳 : {positions_data["14:00"]["counts"]}')
+    print(f'18:00のポジション数 : {len(positions_data["18:00"]["positions"])}')
+    print(f'18:00のポジション内訳 : {positions_data["18:00"]["counts"]}')
