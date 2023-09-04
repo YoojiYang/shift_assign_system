@@ -10,10 +10,10 @@ def get_employee_skills():
   df_employee = df_employee.iloc[2:]
 
   # 辞書を作成
-  employeeSkills = {row['id']: row['skills'] for index, row in df_employee.iterrows() if row['id']}
+  employee_skills = {row['id']: row['skills'] for index, row in df_employee.iterrows() if row['id']}
 
-  return employeeSkills
+  return employee_skills
 
 if __name__ == "__main__":
-  employeeSkills = get_employee_skills()
-  print("employeeSkills: ", employeeSkills)
+  employee_skills = get_employee_skills()
+  print("employee_skills: ", employee_skills)
