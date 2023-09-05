@@ -1,4 +1,4 @@
-from .spreadsheet_manager import open_spreadsheet
+from ...spreadsheet_manager import open_spreadsheet
 import pandas as pd
 
 # スプレッドシートから従業員の出勤可否情報と、今回の処理の対象となる期間を取得

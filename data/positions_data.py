@@ -1,4 +1,4 @@
-from .spreadsheet_manager import open_spreadsheet
+from ...spreadsheet_manager import open_spreadsheet
 from collections import defaultdict
 import pandas as pd
 
