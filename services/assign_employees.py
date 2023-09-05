@@ -3,17 +3,23 @@ sys.path.append('/Users/yoojiyang/Desktop/dev/ESCON/esconShiftAsignProject/compo
 import logging
 logging.basicConfig(level=logging.INFO)
 
+from get_data.positions_details import positions_details, must_have_skills_positions
 from get_data.employee_skills_data import get_employee_skills
 from get_data.positions_data import get_positions_data
-from get_data.work_day_data import get_work_day_data
 from get_data.work_history_data import get_work_history
-from get_data.positions_details import positions_details, must_have_skills_positions
+from get_data.work_day_data import get_work_day_data
 
-
+# 関数の中身を展開
 employee_skills = get_employee_skills()
 positions_data = get_positions_data()
-work_day_data = get_work_day_data()
 leader_count, total_work_time = get_work_history()
+work_day_data = get_work_day_data()
+
+# work_day_dataの中身を展開
+availability_employees = work_day_data["availability_data"]["availability"]
+late_start_employees = work_day_data["availability_data"]["late_start"]
+leave_early_employees = work_day_data["availability_data"]["leave_early"]
+game_days_data = work_day_data["game_days_data"]
 
 
 # =================================================================

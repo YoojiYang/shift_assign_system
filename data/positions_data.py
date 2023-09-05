@@ -2,15 +2,6 @@ from .spreadsheet_manager import open_spreadsheet
 from collections import defaultdict
 import pandas as pd
 
-# 各ポジションの必要人数を計算する処理
-def get_position_counts(position_list):
-    position_counts = defaultdict(int)
-    for code in position_list.values():
-        position_type = str(code)[:3]
-        position_counts[position_type] += 1
-    return dict(position_counts)
-
-
 # シフト表マスタのデータを取得
 def get_positions_by_start_time():
     spreadsheet = open_spreadsheet()
@@ -35,7 +26,15 @@ def get_positions_by_start_time():
     
     return positionlist_13, positionlist_14, positionlist_18
 
+# 各ポジションの必要人数を計算する処理
+def get_position_counts(position_list):
+    position_counts = defaultdict(int)
+    for code in position_list.values():
+        position_type = str(code)[:3]
+        position_counts[position_type] += 1
+    return dict(position_counts)
 
+# 試合開始時間別のポジション情報を取得
 def get_positions_data():
     positionlist_13, positionlist_14, positionlist_18 = get_positions_by_start_time()
 
@@ -50,8 +49,6 @@ def get_positions_data():
     }
     
     return positions_data
-
-
 
 if __name__ == "__main__":
     positions_data = get_positions_data()

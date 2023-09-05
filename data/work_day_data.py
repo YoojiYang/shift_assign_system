@@ -1,13 +1,7 @@
 from .spreadsheet_manager import open_spreadsheet
 import pandas as pd
 
-def get_employees_by_condition(df, dates, condition):
-  employees_by_condition = {}
-  for date in dates:
-      employees_by_condition[date] = df[df[date] == condition].index.tolist()
-  return employees_by_condition
-
-
+# スプレッドシートから従業員の出勤可否情報と、今回の処理の対象となる期間を取得
 def get_spreadsheet_data():
   spreadsheet = open_spreadsheet()
   availability_sheet = spreadsheet.worksheet('出勤可否連絡シート')
@@ -23,9 +17,15 @@ def get_spreadsheet_data():
   
   return df_availability, target_period
 
+# 条件に合致する従業員を辞書にまとめる
+def get_employees_by_condition(df, dates, condition):
+  employees_by_condition = {}
+  for date in dates:
+      employees_by_condition[date] = df[df[date] == condition].index.tolist()
+  return employees_by_condition
 
-# 従業員ごとの出勤可否情報を取得する
-def get_employees_availability():
+# ３種類の従業員の出勤可否情報を取得する。（1日出勤可能、18時スタート、20時上がり）
+def get_employee_availability_data():
   df_availability, target_period = get_spreadsheet_data()
   
   # 不要なデータをdfから削除する
@@ -49,7 +49,7 @@ def get_employees_availability():
   
   # 辞書の条件を設定
   available_terms = "〇"
-  lateStart_terms = "18"
+  lateStart_terms = "●"
   leaveEarly_terms = "20"
   
   # work_days_indexの前までのすべての列名を取得
@@ -59,14 +59,17 @@ def get_employees_availability():
   availability_employees = get_employees_by_condition(df_availability, dates, available_terms)
   late_start_employees = get_employees_by_condition(df_availability, dates, lateStart_terms)
   leave_early_employees = get_employees_by_condition(df_availability, dates, leaveEarly_terms)
-
-  late_start_or_leave_early = {key: late_start_employees.get(key, []) + leave_early_employees.get(key, []) for key in late_start_employees}
   
-  return availability_employees, late_start_or_leave_early
-
+  employee_availability_data = {
+    "availability": availability_employees,
+    "late_start": late_start_employees,
+    "leave_early": leave_early_employees,
+  }
+  
+  return employee_availability_data
 
 # 試合日ごとの試合開始時間と必要従業員数を取得
-def get_game_days():
+def get_game_days_data():
   df_game_days, target_period = get_spreadsheet_data()
   
   # 必要な列と行だけ取り出す
@@ -82,30 +85,28 @@ def get_game_days():
   playballTime_values = df_game_days.iloc[0].values
   potentialAttendance_values = df_game_days.iloc[1].values
   # 辞書に格納
-  game_days = {}
+  game_days_data = {}
   for key, playballTime, potentialAttendance in zip(keys, playballTime_values, potentialAttendance_values):
-      game_days[key] = {
+      game_days_data[key] = {
           "playballTime": playballTime,
           "potentialAttendance": potentialAttendance
       }
       
-  return game_days
+  return game_days_data
 
 # 1つの辞書にまとめる
 def get_work_day_data():
-  availability_employees, late_start_or_leave_early = get_employees_availability()
-  game_days = get_game_days()
+  employee_availability_data = get_employee_availability_data()
+  game_days_data = get_game_days_data()
   
   work_day_data = {
-      'availability_employees': availability_employees,
-      'late_start_or_leave_early': late_start_or_leave_early,
-      'game_days': game_days
+      'availability_data': employee_availability_data,
+      'game_days_data': game_days_data
   }
   
   return work_day_data
 
 if __name__ == "__main__":
   work_day_data = get_work_day_data()
-  print(f'availability_employees: {work_day_data["availability_employees"]}')
-  print(f'late_start_or_leave_early: {work_day_data["late_start_or_leave_early"]}')
-  print(f'game_days: {work_day_data["game_days"]}')
+  print(f'availability_data: {work_day_data["availability_data"]}')
+  print(f'game_days_data: {work_day_data["game_days_data"]}')
