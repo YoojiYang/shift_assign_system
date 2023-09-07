@@ -1,3 +1,13 @@
-
-ana-shift-assignment-07cb8be7f0b3.json
+# data
+spreadsheet_key.json
 spreadsheet_manager.py
+
+# VSCode
+/.vscode
+
+# pycache
+__pycache__
+
+# test
+test
+test.py

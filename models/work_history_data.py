@@ -1,4 +1,4 @@
-from ...spreadsheet_manager import open_spreadsheet
+from .spreadsheet_manager import open_spreadsheet
 import pandas as pd
 import numpy as np
 
