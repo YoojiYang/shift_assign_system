@@ -1,6 +1,4 @@
-from models import (
-  open_spreadsheet
-)
+from models.spreadsheet_manager import open_spreadsheet
 
 # スプレッドシートにアサイン結果を書き込む
 # 早番と遅番で引数を分ける、　それに付随して書き込み位置なども修正する
@@ -12,7 +10,7 @@ def write_to_spreadsheet(regular_position_dict, reserve_position_dict, work_day_
   sections = [
       (regular_position_dict, 'C7', 'C36'),
       (reserve_position_dict, 'C40', 'C45'),
-      (work_day_data['availability_data']['late_Start'], 'C46', 'C51'),
+      (work_day_data['availability_data']['late_start'], 'C46', 'C51'),
       (work_day_data['availability_data']['leave_early'], 'C52', 'C54'),
   ]
 

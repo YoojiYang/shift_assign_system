@@ -1,32 +1,16 @@
 import logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 from models import (
-    get_employee_skills,
-    get_positions_data,
-    must_have_skills_positions,
-    get_work_history,
+    get_positions_data
 )
 
-from services.for_single_day import (
-    assign_sub_positions,
-    assign_main_positions,
-    handle_assignment_error,
-    assign_main_positions_additional_employee,
+from services.create_single_day_list.get_best_employee.get_best_employee import (
+    get_best_employee
 )
-
-
 
 # 関数の中身を展開
-employee_skills = get_employee_skills()
 positions_data = get_positions_data()
-leader_count, total_work_time = get_work_history()
-
-
-# =================================================================
-# create_single_day_list関数から呼び出される
-# =================================================================
-
 
 # 次に割り当てを行う対象のポジションを取り出す
 def get_target_work_code7_list(current_position_code3, current_game_time):
@@ -35,20 +19,8 @@ def get_target_work_code7_list(current_position_code3, current_game_time):
                     ]
     return position_code
 
-# アサインされたリストをスプレッドシートに書き込む形に並び替える関数
-def sort_current_day_dict(new_dict, current_game_time):
-    sorted_new_dict = {}
-    for key in sorted(positions_data[current_game_time]['positions'].keys(), key=int):
-        position_code = positions_data[current_game_time]['positions'][key]
-        sorted_new_dict[position_code] = new_dict[position_code]
-    return sorted_new_dict
-
-# =================================================================
-# メイン関数であるcreate_single_day_list_for_game_days関数から呼び出される
-# =================================================================
-
 # 従業員を条件に従ってアサインする関数
-def create_single_day_list(available_employees, positions_count, current_game_time):
+def create_single_day_list(available_employees, positions_count, current_game_time, total_work_time, leader_count):
     # この関数が返すリストを初期化
     current_day_dict = {} # ポジションコードをキーとして、値にアサインされた従業員のIDが入る辞書
     assigned_employees = set() # 重複選択を防ぐためのリスト
@@ -67,9 +39,11 @@ def create_single_day_list(available_employees, positions_count, current_game_ti
         for current_target_work_code7 in target_work_code7_list:
             if required_count <= 0: # 必要な従業員数が0になったら次のポジションへ
                 break
-            best_employee, required_count = get_best_employee(current_target_work_code7, available_employees, assigned_employees, current_position_code3, required_count, total_work_time, leader_count)
+            best_employee, required_count = get_best_employee(available_employees, assigned_employees, current_position_code3, required_count, total_work_time, leader_count)
+            # 最適な従業員を取得できた場合、その従業員を辞書に追加し、割り当て済みのリストに追加する
             if best_employee:
                 current_day_dict[current_target_work_code7] = best_employee
+                assigned_employees.add(best_employee)
                 # アサインするポジションがリーダーの場合、leader_countを+1する
                 if current_position_code3[2] == '1':
                     
