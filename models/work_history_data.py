@@ -1,4 +1,4 @@
-from .spreadsheet_manager import open_spreadsheet
+from spreadsheet_manager import open_spreadsheet
 import pandas as pd
 import numpy as np
 
@@ -25,11 +25,15 @@ def get_df_work_history_data():
   # データ取得範囲を設定
   df_work_history_data = df_work_history_data.iloc[start_row_index: end_row_index, start_column_index: end_column_index]
   
+  print(df_work_history_data)
+  
   return df_work_history_data
 
 # 従業員ごとに勤務情報を集計する
-def calc_work_history_data(target_count, target):
+def create_work_history_dict(target):
   df_work_history_data = get_df_work_history_data()
+  
+  new_dict = {}
   
   # 各行に対しての処理
   for _, row in df_work_history_data.iterrows():
@@ -46,32 +50,18 @@ def calc_work_history_data(target_count, target):
         except (ValueError, IndexError):  # 文字列が数値でない、または短すぎる場合の例外処理
           continue
         
-    target_count[employee_code] = total
+    new_dict[employee_code] = total
     
-  return target_count
+  return new_dict
 
-# 従業員ごとにリーダーにアサインされた回数を集計する
-def get_leader_count():
-  leader_count = {}
-  target = "2:3" # 勤務コードの3文字目を指定
-  
-  leader_count = calc_work_history_data(leader_count, target)
-  
-  return leader_count
-
-# 従業員ごとの累積勤務時間を集計する
-def get_total_work_time():
-  total_work_time = {}
-  target = "5:6" # 勤務コードの6文字目を指定
-
-  total_work_time = calc_work_history_data(total_work_time, target)
-
-  return total_work_time
+# 勤務コードのどの桁を取り出すかを設定
+leader_count_target = 2
+total_work_time_target = 5
 
 # 従業員ごとのリーダーアサイン回数、累積勤務時間の情報を取得する
 def get_work_history():
-  leader_count = get_leader_count()
-  total_work_time = get_total_work_time()
+  leader_count = create_work_history_dict(leader_count_target)
+  total_work_time = create_work_history_dict(total_work_time_target)
   
   return leader_count, total_work_time
 

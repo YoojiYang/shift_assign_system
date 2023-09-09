@@ -49,8 +49,8 @@ def get_employee_availability_data():
   
   # 辞書の条件を設定
   available_terms = "〇"
-  lateStart_terms = "●"
-  leaveEarly_terms = "20"
+  lateStart_terms = "18〜"
+  leaveEarly_terms = "〜20"
   
   # work_days_indexの前までのすべての列名を取得
   dates = [col for col in df_availability.columns]

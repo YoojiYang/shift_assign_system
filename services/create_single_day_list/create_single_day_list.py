@@ -1,11 +1,11 @@
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-from models import (
+from ...models import (
     get_positions_data
 )
 
-from services.create_single_day_list.get_best_employee.get_best_employee import (
+from ...services.create_single_day_list.get_best_employee.get_best_employee import (
     get_best_employee
 )
 

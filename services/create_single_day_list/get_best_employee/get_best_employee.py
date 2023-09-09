@@ -2,13 +2,13 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 
 
-from models import (
+from ....models import (
     positions_details,
     must_have_skills_positions,
     
 )
 
-from services.create_single_day_list.get_best_employee.assign_logic.assign_logic import (
+from ....services.create_single_day_list.get_best_employee.assign_logic.assign_logic import (
     select_best_employee,
     create_suitable_employees_list,
     create_matching_skills_employees_list,

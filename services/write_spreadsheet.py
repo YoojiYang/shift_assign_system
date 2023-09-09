@@ -1,4 +1,4 @@
-from models.spreadsheet_manager import open_spreadsheet
+from ..models.spreadsheet_manager import open_spreadsheet
 
 # スプレッドシートにアサイン結果を書き込む
 # 早番と遅番で引数を分ける、　それに付随して書き込み位置なども修正する

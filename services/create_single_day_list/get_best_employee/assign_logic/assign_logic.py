@@ -1,7 +1,7 @@
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-from models import (
+from .....models import (
   get_employee_skills
 )
 
