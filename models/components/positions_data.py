@@ -1,10 +1,8 @@
-from .spreadsheet_manager import open_spreadsheet
 from collections import defaultdict
 import pandas as pd
 
 # シフト表マスタのデータを取得
-def get_work_code7_by_start_time():
-    spreadsheet = open_spreadsheet()
+def get_work_code7_by_start_time(spreadsheet):
     position_master = spreadsheet.worksheet('シフト表マスタ')
     position_data = position_master.get_all_values()
     df_position = pd.DataFrame(position_data)
@@ -35,8 +33,8 @@ def get_position_code3_counts(work_code7_list):
     return dict(position_code3_counts)
 
 # 試合開始時間別のポジション情報を取得
-def get_positions_data():
-    work_code7_list_13, work_code7_list_14, work_code7_list_18 = get_work_code7_by_start_time()
+def get_positions_data(spreadsheet):
+    work_code7_list_13, work_code7_list_14, work_code7_list_18 = get_work_code7_by_start_time(spreadsheet)
 
     position_code3_counts_13 = get_position_code3_counts(work_code7_list_13)
     position_code3_counts_14 = get_position_code3_counts(work_code7_list_14)
@@ -50,11 +48,11 @@ def get_positions_data():
     
     return positions_data
 
-if __name__ == "__main__":
-    positions_data = get_positions_data()
-    print(f'13:00のポジション一覧 : {positions_data["13:00"]["work_code7_list"]}')
-    print(f'13:00のポジション内訳 : {positions_data["13:00"]["position_code3_counts"]}')
-    print(f'14:00のポジション数 : {len(positions_data["14:00"]["work_code7_list"])}')
-    print(f'14:00のポジション内訳 : {positions_data["14:00"]["position_code3_counts"]}')
-    print(f'18:00のポジション数 : {len(positions_data["18:00"]["work_code7_list"])}')
-    print(f'18:00のポジション内訳 : {positions_data["18:00"]["position_code3_counts"]}')
+# if __name__ == "__main__":
+#     positions_data = get_positions_data()
+#     print(f'13:00のポジション一覧 : {positions_data["13:00"]["work_code7_list"]}')
+#     print(f'13:00のポジション内訳 : {positions_data["13:00"]["position_code3_counts"]}')
+#     print(f'14:00のポジション数 : {len(positions_data["14:00"]["work_code7_list"])}')
+#     print(f'14:00のポジション内訳 : {positions_data["14:00"]["position_code3_counts"]}')
+#     print(f'18:00のポジション数 : {len(positions_data["18:00"]["work_code7_list"])}')
+#     print(f'18:00のポジション内訳 : {positions_data["18:00"]["position_code3_counts"]}')

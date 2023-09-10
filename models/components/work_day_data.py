@@ -1,9 +1,7 @@
-from .spreadsheet_manager import open_spreadsheet
 import pandas as pd
 
 # スプレッドシートから従業員の出勤可否情報と、今回の処理の対象となる期間を取得
-def get_spreadsheet_data():
-  spreadsheet = open_spreadsheet()
+def get_spreadsheet_data(spreadsheet):
   availability_sheet = spreadsheet.worksheet('出勤可否連絡シート')
   target_period_sheet = spreadsheet.worksheet('アサイン対象期間設定')
   
@@ -25,8 +23,8 @@ def get_employees_by_condition(df, dates, condition):
   return employees_by_condition
 
 # ３種類の従業員の出勤可否情報を取得する。（1日出勤可能、18時スタート、20時上がり）
-def get_employee_availability_data():
-  df_availability, target_period = get_spreadsheet_data()
+def get_employee_availability_data(spreadsheet):
+  df_availability, target_period = get_spreadsheet_data(spreadsheet)
   
   # 不要なデータをdfから削除する
   # 行を整える
@@ -44,6 +42,11 @@ def get_employee_availability_data():
   # 列を整える
   start_day = target_period['start_day']
   end_day = target_period['end_day']
+  print('>>>>>>>>>>>>>>>>>>>>>>>>>>  target periods  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+  print(f'fc: get_employee_availability_data, start_day: {start_day}')
+  print(f'fc: get_employee_availability_data, end_day: {end_day}')
+  print('>>>>>>>>>>>>>>>>>>>>>>>>>>  target periods  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+  
   cols = [col for col in df_availability.columns if start_day <= col <= end_day]
   df_availability = df_availability[cols]
   
@@ -69,8 +72,8 @@ def get_employee_availability_data():
   return employee_availability_data
 
 # 試合日ごとの試合開始時間と必要従業員数を取得
-def get_game_days_data():
-  df_game_days, target_period = get_spreadsheet_data()
+def get_game_days_data(spreadsheet):
+  df_game_days, target_period = get_spreadsheet_data(spreadsheet)
   
   # 必要な列と行だけ取り出す
   header_row = 1
@@ -95,9 +98,9 @@ def get_game_days_data():
   return game_days_data
 
 # 1つの辞書にまとめる
-def get_work_day_data():
-  employee_availability_data = get_employee_availability_data()
-  game_days_data = get_game_days_data()
+def get_work_day_data(spreadsheet):
+  employee_availability_data = get_employee_availability_data(spreadsheet)
+  game_days_data = get_game_days_data(spreadsheet)
   
   work_day_data = {
       'availability_data': employee_availability_data,
@@ -106,7 +109,7 @@ def get_work_day_data():
   
   return work_day_data
 
-if __name__ == "__main__":
-  work_day_data = get_work_day_data()
-  print(f'availability_data: {work_day_data["availability_data"]}')
-  print(f'game_days_data: {work_day_data["game_days_data"]}')
+# if __name__ == "__main__":
+#   work_day_data = get_work_day_data()
+#   print(f'availability_data: {work_day_data["availability_data"]}')
+#   print(f'game_days_data: {work_day_data["game_days_data"]}')

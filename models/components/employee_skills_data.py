@@ -1,8 +1,7 @@
-from .spreadsheet_manager import open_spreadsheet
 import pandas as pd
 
-def get_employee_skills():
-  spreadsheet = open_spreadsheet()
+def get_employee_skills(spreadsheet):
+  # spreadsheet = open_spreadsheet()
   employee_master = spreadsheet.worksheet('従業員マスタ')
   employee_data = employee_master.get_all_values()
   df_employee = pd.DataFrame(employee_data)
@@ -14,6 +13,6 @@ def get_employee_skills():
 
   return employee_skills
 
-if __name__ == "__main__":
-  employee_skills = get_employee_skills()
-  print("employee_skills: ", employee_skills)
+# if __name__ == "__main__":
+  # employee_skills = get_employee_skills(spreadsheet)
+  # print("employee_skills: ", employee_skills)

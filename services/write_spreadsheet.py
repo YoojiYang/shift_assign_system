@@ -1,10 +1,12 @@
-from ..models.spreadsheet_manager import open_spreadsheet
+from ..models.components.spreadsheet_manager import open_spreadsheet
 
 # スプレッドシートにアサイン結果を書き込む
 # 早番と遅番で引数を分ける、　それに付随して書き込み位置なども修正する
-def write_to_spreadsheet(regular_position_dict, reserve_position_dict, work_day_data):
+def write_to_spreadsheet(regular_position_dict, reserve_position_dict, models):
   # スプレッドシートを開く
   spreadsheet = open_spreadsheet()
+  
+  work_day_data = models['work_day_data']
 
   # 各セクションの出力開始と終了のセル位置を指定
   sections = [

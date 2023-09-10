@@ -1,11 +1,7 @@
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-from .....models import (
-  get_employee_skills
-)
-
-employee_skills = get_employee_skills()
+# employee_skills = get_employee_skills()
 
 
 # --------------------------------------------------------------
@@ -50,11 +46,13 @@ def is_suitable_employees(employee_id, available_employees, assigned_employees):
 # --------------------------------------------------------------
 
 # 現在のポジションに対するスキルを持っている従業員を抽出する
-def create_matching_skills_employees_list(suitable_employees_list, current_position_code3, skills_index, leader_count):
+def create_matching_skills_employees_list(suitable_employees_list, current_position_code3, skills_index, leader_count, employee_skills):
   """
   この関数は、現在のポジションにアサイン可能なスキルを持つ従業員を抽出して、新たなリストを作成します。
   （ここにパラメータと戻り値の説明を追加）
   """
+  
+  
   # リストを初期化
   matching_skills_employees_list = []
 
@@ -114,13 +112,15 @@ def filter_by_min_leader_count(matching_skills_leaders_list, leader_count):
 # --------------------------------------------------------------
 
 # リストの中から、最も適切な従業員を選択する
-def select_best_employee(employees_list, total_work_time, current_position_code3, skills_index, positions_details):
+def select_best_employee(employees_list, total_work_time, current_position_code3, skills_index, positions_details, employee_skills):
   """
   この関数は、suitable_employees_listの中から、最も適切な従業員を選ぶ関数です。
   戻り値: 従業員ID
   """
   logging.debug(f'fc: select_best_employee, skills_index: {skills_index}')
   logging.debug(f'fc: select_best_employee, employees_list: {employees_list}')
+  
+  
   
   if not employees_list:
     return None

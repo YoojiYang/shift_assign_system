@@ -1,4 +1,3 @@
-from spreadsheet_manager import open_spreadsheet
 import pandas as pd
 import numpy as np
 
@@ -6,8 +5,7 @@ import numpy as np
 start_column_name = "id"
 
 # 勤務情報シートから必要な情報をデータフレームとして取得
-def get_df_work_history_data():
-  spreadsheet = open_spreadsheet()
+def get_df_work_history_data(spreadsheet):
   work_history_master = spreadsheet.worksheet('勤務情報')
   work_history_data = work_history_master.get_all_values()
   df_work_history_data = pd.DataFrame(work_history_data)
@@ -25,13 +23,11 @@ def get_df_work_history_data():
   # データ取得範囲を設定
   df_work_history_data = df_work_history_data.iloc[start_row_index: end_row_index, start_column_index: end_column_index]
   
-  print(df_work_history_data)
-  
   return df_work_history_data
 
 # 従業員ごとに勤務情報を集計する
-def create_work_history_dict(target):
-  df_work_history_data = get_df_work_history_data()
+def create_work_history_dict(spreadsheet, target):
+  df_work_history_data = get_df_work_history_data(spreadsheet)
   
   new_dict = {}
   
@@ -40,15 +36,14 @@ def create_work_history_dict(target):
     employee_code = row[start_column_name]
     total = 0  # 従業員の勤務データの合計
     
-    if len(row) > 2:
-      # 従業員コード以外の列（勤務データ）に対しての処理
-      for work_data in row[2:]:
-        # 上からtarget目の文字列を取り出し、数値に変換
-        try:
-          value = int(work_data[int(target)])
-          total += value
-        except (ValueError, IndexError):  # 文字列が数値でない、または短すぎる場合の例外処理
-          continue
+    # 従業員コード以外の列（勤務データ）に対しての処理
+    for work_data in row[1:]:
+      # 上からtarget目の文字列を取り出し、数値に変換
+      try:
+        value = int(work_data[int(target)])
+        total += value
+      except (ValueError, IndexError):  # 文字列が数値でない、または短すぎる場合の例外処理
+        continue
         
     new_dict[employee_code] = total
     
@@ -59,13 +54,18 @@ leader_count_target = 2
 total_work_time_target = 5
 
 # 従業員ごとのリーダーアサイン回数、累積勤務時間の情報を取得する
-def get_work_history():
-  leader_count = create_work_history_dict(leader_count_target)
-  total_work_time = create_work_history_dict(total_work_time_target)
+def get_work_history(spreadsheet):
+  leader_count = create_work_history_dict(spreadsheet, leader_count_target)
+  total_work_time = create_work_history_dict(spreadsheet, total_work_time_target)
   
-  return leader_count, total_work_time
+  work_history = {
+    "leader_count": leader_count,
+    "total_work_time": total_work_time,
+  }
+  
+  return work_history
 
-if __name__ == "__main__":
-  leader_count, total_work_time = get_work_history()
-  print("leader_count: ", leader_count)
-  print("total_work_time: ", total_work_time)
+# if __name__ == "__main__":
+#   leader_count, total_work_time = get_work_history(spreadsheet)
+#   print("leader_count: ", leader_count)
+#   print("total_work_time: ", total_work_time)

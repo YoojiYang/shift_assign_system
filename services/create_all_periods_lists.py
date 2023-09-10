@@ -1,20 +1,13 @@
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-from ..models import (
-    get_work_history,
-    get_positions_data,
-)
-
 from ..services.create_single_day_list.create_single_day_list import create_single_day_list
 
-# 関数の中身を展開
-leader_count, total_work_time = get_work_history()
-positions_data = get_positions_data()
 
 
 # アサインされたリストをスプレッドシートに書き込む形に並び替える関数
-def sort_current_day_dict(new_dict, current_game_time):
+def sort_current_day_dict(positions_data, new_dict, current_game_time):
+    
     sorted_new_dict = {}
     for key in sorted(positions_data[current_game_time]['work_code7_list'].keys(), key=int):
         position_code = positions_data[current_game_time]['work_code7_list'][key]
@@ -24,7 +17,13 @@ def sort_current_day_dict(new_dict, current_game_time):
 
 
 # 試合日ごとのアサインリストを作成する
-def create_all_periods_lists(work_day_data):
+def create_all_periods_lists(models):
+    
+    employee_skills = models['employee_skills']
+    leader_count = models['work_history']['leader_count'] 
+    total_work_time = models['work_history']['total_work_time'] 
+    positions_data = models['positions_data']
+    work_day_data = models['work_day_data']
     
     logging.info(f'create_all_periods_lists : start!')
 
@@ -49,7 +48,7 @@ def create_all_periods_lists(work_day_data):
         logging.info("---------------------------------------------------------------------------------------------------------")
         
         # 従業員のアサイン処理
-        current_assignment_dict, assigned_employees = create_single_day_list(available_employees, positions_count, current_game_time, total_work_time, leader_count)
+        current_assignment_dict, assigned_employees = create_single_day_list(available_employees, positions_count, current_game_time, total_work_time, leader_count, positions_data, employee_skills)
         
         # 従業員の勤務時間を追跡
         for key, value in current_assignment_dict.items():
@@ -60,7 +59,7 @@ def create_all_periods_lists(work_day_data):
         logging.debug(f"{current_game_day} total_work_time :  {total_work_time}")
         
         # 作成した従業員の辞書をスプシに出力する順番に並び替える
-        assigned_dict = sort_current_day_dict(current_assignment_dict, current_game_time)
+        assigned_dict = sort_current_day_dict(positions_data, current_assignment_dict, current_game_time)
         logging.debug(f' {current_game_day}のアサインリスト:{len(assigned_dict)}人 {assigned_dict}')
         # 割り当てから漏れた従業員を集める
         too_many_employees = [employee for employee in available_employees if employee not in assigned_employees]
