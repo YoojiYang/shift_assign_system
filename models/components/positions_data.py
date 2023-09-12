@@ -2,8 +2,8 @@ from collections import defaultdict
 import pandas as pd
 
 # シフト表マスタのデータを取得
-def get_work_code7_by_start_time(spreadsheet):
-    position_master = spreadsheet.worksheet('シフト表マスタ')
+def get_work_code7_by_start_time(spreadsheet, sheet_name):
+    position_master = spreadsheet.worksheet(sheet_name['position_master'])
     position_data = position_master.get_all_values()
     df_position = pd.DataFrame(position_data)
     df_position = df_position.iloc[:, :9]
@@ -33,8 +33,8 @@ def get_position_code3_counts(work_code7_list):
     return dict(position_code3_counts)
 
 # 試合開始時間別のポジション情報を取得
-def get_positions_data(spreadsheet):
-    work_code7_list_13, work_code7_list_14, work_code7_list_18 = get_work_code7_by_start_time(spreadsheet)
+def get_positions_data(spreadsheet, sheet_name):
+    work_code7_list_13, work_code7_list_14, work_code7_list_18 = get_work_code7_by_start_time(spreadsheet, sheet_name)
 
     position_code3_counts_13 = get_position_code3_counts(work_code7_list_13)
     position_code3_counts_14 = get_position_code3_counts(work_code7_list_14)

@@ -1,13 +1,9 @@
-# data
+# vdcode
+.vscode
+
+# models
 spreadsheet_key.json
 spreadsheet_manager.py
 
-# VSCode
-/.vscode
-
-# pycache
+# __pycache__
 __pycache__
-
-# test
-test
-test.py
