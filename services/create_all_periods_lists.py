@@ -9,8 +9,8 @@ from ..services.create_single_day_list.create_single_day_list import create_sing
 def sort_current_day_dict(positions_data, new_dict, current_game_time):
     
     sorted_new_dict = {}
-    for key in sorted(positions_data[current_game_time]['work_code7_list'].keys(), key=int):
-        position_code = positions_data[current_game_time]['work_code7_list'][key]
+    for key in sorted(positions_data[current_game_time]['work_code9_list'].keys(), key=int):
+        position_code = positions_data[current_game_time]['work_code9_list'][key]
         sorted_new_dict[position_code] = new_dict[position_code]
     return sorted_new_dict
 

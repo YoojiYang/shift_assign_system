@@ -110,6 +110,6 @@ def get_work_day_data(spreadsheet, sheet_name):
   return work_day_data
 
 # if __name__ == "__main__":
-#   work_day_data = get_work_day_data()
+#   work_day_data = get_work_day_data(spreadsheet, sheet_name)
 #   print(f'availability_data: {work_day_data["availability_data"]}')
 #   print(f'game_days_data: {work_day_data["game_days_data"]}')

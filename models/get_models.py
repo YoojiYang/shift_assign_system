@@ -1,10 +1,10 @@
-from components.spreadsheet_manager import open_spreadsheet
-from components.employee_skills_data import get_employee_skills
-from components.positions_data import get_positions_data
-from components.work_day_data import get_work_day_data
-from components.work_history_data import get_work_history
-from components.positions_details import positions_details, must_have_skills_positions
-from components.sheet_name import sheet_name
+from .components.spreadsheet_manager import open_spreadsheet
+from .components.employee_skills_data import get_employee_skills
+from .components.positions_data import get_positions_data
+from .components.work_day_data import get_work_day_data
+from .components.work_history_data import get_work_history
+from .components.positions_details import positions_details, must_have_skills_positions 
+from .components.sheet_name import sheet_name
 
 def get_models():
   spreadsheet = open_spreadsheet()
@@ -27,6 +27,9 @@ def get_models():
 
 if __name__ == "__main__":
   models = get_models()
+  
+  # print(f'get_models: {models}')
+  
   # print(f'employee_skills: {models["employee_skills"]}')
 
   # print(f'positions_data: {models["positions_data"]}')
@@ -37,5 +40,5 @@ if __name__ == "__main__":
   print(f'leader_count: {models["work_history"]["leader_count"]}')
   print(f'total_work_time: {models["work_history"]["total_work_time"]}')
 
-  # print(f'positions_details: {models["positions_details"]}')
+  # print(f'positions_details: {models["positions_details"]}') 
   # print(f'must_have_skills_positions: {models["must_have_skills_positions"]}')

@@ -20,8 +20,14 @@ def write_to_spreadsheet(regular_position_dict, reserve_position_dict, models):
   for section_data, start_cell, end_cell in sections:
     if isinstance(section_data, dict):
       for date, assignments in section_data.items():
-        # 出力先のシート名を指定
-        worksheet = spreadsheet.worksheet(date)
+        try:  # 早番と遅番で日付が重複する場合の例外処理
+          # 出力先のシート名を指定
+          worksheet = spreadsheet.worksheet(date)
+        except Exception as e:
+          print(f"Error: The worksheet for date '{date}' does not exist. {e}")
+          continue  # 次の日付の処理に進む
+
+          
         if isinstance(assignments, dict):  # 辞書の入れ子構造の場合
           values_to_write = [[value] for value in assignments.values()]
         else:  # 辞書の値がリストの場合
